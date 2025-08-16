@@ -60,6 +60,9 @@ func _snap_value_to_slice(
 		previous_slice: int,
 ) -> int:
 	
+	# TODO: Using the slice middle should be optional
+	#		When dynamically switching between values slicers with different slice counts,
+	#		it's better if the divisions are aligned!
 	var prev_slice_middle = (previous_slice + 0.5) * _slice_size + _range_minimum
 	
 	if _threshold_value > 0.0 and abs(prev_slice_middle - current_value) < _slice_size:
