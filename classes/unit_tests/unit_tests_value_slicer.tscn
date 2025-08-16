@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjn3hys0u17mx"]
+
+[ext_resource type="Script" uid="uid://2r53r2ca5sf5" path="res://tests/unit_tests_value_slicer.gd" id="1_bwkdu"]
+[ext_resource type="Script" uid="uid://b7533wg1ao53n" path="res://source/utility/value_slicer.gd" id="2_4brjy"]
+
+[node name="UnitTestsValueSlicer" type="Node" node_paths=PackedStringArray("value_slicer_linear", "value_slicer_linear_less_trivial", "value_slicer_looping")]
+script = ExtResource("1_bwkdu")
+value_slicer_linear = NodePath("ValueSlicer_linear")
+value_slicer_linear_less_trivial = NodePath("ValueSlicer_linear_less_trivial")
+value_slicer_looping = NodePath("ValueSlicer_looping")
+
+[node name="ValueSlicer_linear" type="Node" parent="."]
+script = ExtResource("2_4brjy")
+_range_maximum = 4.0
+_slice_numbers = 4
+metadata/_custom_type_script = "uid://b7533wg1ao53n"
+
+[node name="ValueSlicer_linear_less_trivial" type="Node" parent="."]
+script = ExtResource("2_4brjy")
+_range_minimum = -3.0
+_range_maximum = 3.0
+_slice_numbers = 12
+_threshold_factor = 0.2
+metadata/_custom_type_script = "uid://b7533wg1ao53n"
+
+[node name="ValueSlicer_looping" type="Node" parent="."]
+script = ExtResource("2_4brjy")
+_range_maximum = 360.0
+_slice_numbers = 4
+_use_looping_range = true
+metadata/_custom_type_script = "uid://b7533wg1ao53n"
