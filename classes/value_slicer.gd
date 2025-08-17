@@ -1,4 +1,4 @@
-@icon("res://classes/icons/pie.svg")
+@icon("res://classes/icons/pizza.svg")
 
 extends Node
 class_name ValueSlicer
