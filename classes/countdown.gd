@@ -6,29 +6,31 @@ extends Node
 class_name Countdown
 
 @export_range(0.0, 100.0) var MAXIMUM_VALUE : float = 1.0
-# TODO: Integrate the minimum value in the methods
-@export_range(0.0, 100.0) var MINIMUM_VALUE : float = 0.0
+# TODO: Maybe also add a custom minimum value
 @export var START_DEPLETED := false
 
+var _current_value : float
+
 @onready var _maximum_value := MAXIMUM_VALUE
-@onready var _current_value := MAXIMUM_VALUE
 
 # TODO: Rewrite comments to not refer to time anymore
 
 func _ready() -> void:
 	if START_DEPLETED:
 		_current_value = 0.0
+	else:
+		_current_value = MAXIMUM_VALUE
 
 
 ## Use this to progress the value downwards. Unlike the Timer node, this is an explicit action.
-func drain(elapsed_time : float) -> void:
+func progress(elapsed_time : float) -> void:
 	_current_value -= elapsed_time
 	_current_value = max(_current_value, 0.0)
 
 
 ## Refill the timeout by a certain amount of seconds.
 ## Disable clamping to overflow the timeout past the maximum value.
-func fill(added_seconds : float, clamp_maximum := true) -> void:
+func regress(added_seconds : float, clamp_maximum := true) -> void:
 	_current_value += added_seconds
 	if clamp_maximum:
 		_current_value = min(_current_value, _maximum_value)
