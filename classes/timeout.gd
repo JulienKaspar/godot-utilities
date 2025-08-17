@@ -1,4 +1,4 @@
-@icon("res://classes/icons/wind_up.svg")
+@icon("res://classes/icons/abacus.svg")
 
 extends Node
 ## A custom type for manually ticking down time.
