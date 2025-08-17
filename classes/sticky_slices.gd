@@ -1,10 +1,10 @@
 @icon("res://classes/icons/pizza.svg")
 
 extends Node
-class_name ValueSlicer
+class_name StickySlices
 ## A Node to slice a range of values into segments. Define the range and number of slices on the node.
-## When passing in a value it will return a new slice index.
-## A threshold and previous slice is used to determine when the slice changes to avoid flickering.
+## When passing in a value it will return the slice index the value is on.
+## An (optional) threshold and previous slice is used to determine when the slice can change to avoid flickering.
 
 @export_category("Slicer Parameters")
 @export var _range_minimum := 0.0 ## Inclusive value
@@ -28,9 +28,13 @@ func _ready() -> void:
 	_slice_size = _range_size / _slice_numbers
 	_threshold_value = _slice_size * _threshold_factor
 
+# TODO: Make the previous_slice optional.
+#		If it's not passed in, then an internal 'previous_slice' variable should be used.
+#		Add logic to update this internal 'previous_slice'.
+# 		If the threshold value is on 0, then the previous slice shouldn't even matter.
+#		Also if the node is called for the first time, the previous slice shouldn't matter.
 
-## A function to get cut a range into slices and return on which segment a current value is.
-## If used for rotations or other looping ranges, pass in looping_range (true).
+## A function to cut a range into slices and return on which segment a current value is.
 func get_snapped_slice(
 		current_value: float,
 		previous_slice: int,
