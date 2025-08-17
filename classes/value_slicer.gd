@@ -1,3 +1,5 @@
+@icon("res://classes/icons/pie.svg")
+
 extends Node
 class_name ValueSlicer
 ## A Node to slice a range of values into segments. Define the range and number of slices on the node.

@@ -1,4 +1,8 @@
+# Lisence
+
 I offer all code in this repo as Creative Commons CC0.
+
+## Attribution
 
 Various other graphical assets are licensed as follows:
 
@@ -7,3 +11,5 @@ Various other graphical assets are licensed as follows:
 * "abacus" by IconsHome from <a href="https://thenounproject.com/browse/icons/term/abacus/" target="_blank" title="Abacus Icons">Noun Project</a> (CC BY 3.0)
 
 * "music_box" by Yo! Baba from <a href="https://thenounproject.com/browse/icons/term/music-box/" target="_blank" title="music box Icons">Noun Project</a> (CC BY 3.0)
+
+* "Pie" by Putri Afifah Octaviani from <a href="https://thenounproject.com/browse/icons/term/pie/" target="_blank" title="Pie Icons">Noun Project</a> (CC BY 3.0)
