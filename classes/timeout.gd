@@ -1,3 +1,5 @@
+@icon("res://classes/icons/wind_up.svg")
+
 extends Node
 ## A custom type for manually ticking down time.
 ## An alternative to Timer where there's no explicit stopped state and no pausing.
