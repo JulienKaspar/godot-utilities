@@ -1,4 +1,5 @@
-@icon("res://classes/icons/pizza.svg")
+# @icon("res://classes/icons/pizza.svg")
+@icon("./pizza.svg")
 
 extends Node
 class_name StickySlices

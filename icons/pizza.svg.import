@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bkv4o8mrvqw2"
-path="res://.godot/imported/pizza.svg-6f1c236c2522a5e162665d724dce5756.ctex"
+path="res://.godot/imported/pizza.svg-34e9f3e0e233ba165d3c0d583e939856.ctex"
 metadata={
 "has_editor_variant": true,
 "vram_texture": false
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://godot-utilities/classes/icons/pizza.svg"
-dest_files=["res://.godot/imported/pizza.svg-6f1c236c2522a5e162665d724dce5756.ctex"]
+source_file="res://godot-utilities/icons/pizza.svg"
+dest_files=["res://.godot/imported/pizza.svg-34e9f3e0e233ba165d3c0d583e939856.ctex"]
 
 [params]
 
