@@ -3,5 +3,5 @@
 /android/
 
 # Ignore import files so the repo is cleanear and easier to share
-.import
-.uid
+*.import
+*.uid
