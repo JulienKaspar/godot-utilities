@@ -1,34 +1,30 @@
 extends Node
 
-enum input_modes {MOUSE, CONTROLLER}
+enum input_devices {MOUSE, CONTROLLER}
 enum mouse_states {PRESSED, HELD, RELEASED, NONE}
 
-var current_input_mode := input_modes.MOUSE:
-	get():
-		return current_input_mode
+signal input_mode_changed(mode: input_devices)
+var current_input_device := input_devices.MOUSE:
 	set(value):
-		if value == current_input_mode:
+		if value == current_input_device:
 			return
-		current_input_mode = value
+		current_input_device = value
 		input_mode_changed.emit(value)
-signal input_mode_changed(mode: input_modes)
 
-# Mouse related inputs
+# Input settings
 var mouse_sensitivity 		:= 1.0
+
+# Mouse movement
+# TODO: Is this centered mouse position recalculated if the screen resolution adjsusts?
+var mouse_position_centered	:= Vector2.ZERO ## The mouse position based on the screen center as the zero point
 var mouse_position_change	:= Vector2.ZERO
 var mouse_velocity 			:= Vector2.ZERO
-var mouse_vector			:= Vector2.ZERO
+# Mouse input
 var mouse_left_state 		:= mouse_states.NONE
 var mouse_left_held_time 	:= 0.0
 var _mouse_left_pressed 	:= false
 
-var inner_mouse_deadzone := 0.3
-var outer_mouse_deadzone := 0.75
-var movement_vector_mouse : Vector2
-
 var bypass_controls := false
-
-var action_pressed := false
 
 # For touch controls
 var dragging := false
@@ -41,7 +37,7 @@ var movement_vector	:= Vector2.ZERO
 @onready var window_size 	: Vector2 	= get_viewport().size
 @onready var window_width 	: float 	= window_size[0]
 @onready var window_height 	: float 	= window_size[1]
-@onready var window_shortest_length : float = window_width
+@onready var window_shortest_length : float
 
 func _ready() -> void:
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
@@ -58,18 +54,15 @@ func _input(event: InputEvent) -> void:
 	
 	# Check input device and set input mode
 	if event.get_class() in ["InputEventMouseMotion", 'InputEventMouseButton', "InputEventKey"]:
-		current_input_mode = input_modes.MOUSE
+		current_input_device = input_devices.MOUSE
 	elif event.get_class() in ["InputEventJoypadButton", "InputEventJoypadMotion"]:
-		current_input_mode = input_modes.CONTROLLER
+		current_input_device = input_devices.CONTROLLER
 	
 	if bypass_controls:
 		return
-	# WARNING: I set this to _input instead of _unhandled_input. Something seems to also use mouse inputs and then this function wont be called.
 	
-	# For debugging: When the mouse isn't capture you navigate the Godot UI
-	var in_game := Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
 	# Mouse motion
-	if event is InputEventMouseMotion and in_game:
+	if event is InputEventMouseMotion:
 		mouse_velocity = event.screen_velocity
 		mouse_position_change = event.screen_relative
 	
@@ -128,43 +121,31 @@ func process_gameplay_input():
 			else:
 				mouse_left_state = mouse_states.NONE
 	
-	# Action button
-	if Input.is_action_just_pressed("Action"):
-		action_pressed = true
-	else:
-		action_pressed = false
+	# Generic Action button example
+	# if Input.is_action_just_pressed("Action"):
+	# 	action_pressed = true
+	# else:
+	# 	action_pressed = false
 	
 	var mouse_position_change_factor : Vector2
-	var sensitivity := mouse_sensitivity * 2.0
+	# TODO: Shouldn't this be relative to the actual resolution?
 	var width_factor := window_width/1920.0
 	var height_factor := window_height/1080.0
 	# Get relative movement changes based on current resolution
-	mouse_position_change_factor.x = mouse_position_change.x / (window_width / width_factor) * sensitivity
-	mouse_position_change_factor.y = mouse_position_change.y / (window_height / height_factor) * sensitivity
+	mouse_position_change_factor.x = mouse_position_change.x / (window_width / width_factor) * mouse_sensitivity
+	mouse_position_change_factor.y = mouse_position_change.y / (window_height / height_factor) * mouse_sensitivity
 	
-	mouse_vector += mouse_position_change_factor
-	mouse_vector = mouse_vector.limit_length(outer_mouse_deadzone)
-	
-	# Calculate deadzone factor
-	var remap_length = remap(
-			mouse_vector.length(),
-			inner_mouse_deadzone,
-			outer_mouse_deadzone,
-			0,
-			1
-	)
-	remap_length = clamp(remap_length, 0, 1)
+	mouse_position_centered += mouse_position_change_factor
 	
 	# Apply deadzone on movemetn vector
-	movement_vector_mouse = mouse_vector.normalized() * remap_length
-	
+	var movement_vector_mouse = mouse_position_centered.normalized()
 	# Keyboard/Joystick Movement Vector
 	var movement_vector_stick := Input.get_vector("Move Left", "Move Right", "Move Up", "Move Down")
 	
 	# TODO: Probably needs a setting instead of automatic detection?
-	if current_input_mode == input_modes.CONTROLLER:
+	if current_input_device == input_devices.CONTROLLER:
 		movement_vector = movement_vector_stick
-	elif current_input_mode == input_modes.MOUSE:
+	elif current_input_device == input_devices.MOUSE:
 		movement_vector = movement_vector_mouse
 	
 	# Reset some variables if they are not set next frame
@@ -192,7 +173,7 @@ func trigger_rumble(duration := 0.1, weak := false) -> void:
 
 # reset the movement input when returning to main menu
 func reset_movement_input():
-	mouse_vector = Vector2.ZERO
+	mouse_position_centered = Vector2.ZERO
 	mouse_position_change = Vector2.ZERO
 	mouse_velocity = Vector2.ZERO
 	movement_vector = Vector2.ZERO
