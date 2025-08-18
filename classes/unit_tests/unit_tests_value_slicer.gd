@@ -1,9 +1,9 @@
 extends Node
 ## A list of unit tests for the ValueSlicer function.
 
-@export var value_slicer_linear: ValueSlicer
-@export var value_slicer_linear_less_trivial: ValueSlicer
-@export var value_slicer_looping: ValueSlicer
+@export var value_slicer_linear: StickySlices
+@export var value_slicer_linear_less_trivial: StickySlices
+@export var value_slicer_looping: StickySlices
 
 
 ## Executed when the scene is run and initialized
@@ -76,7 +76,7 @@ func unit_tests_looping() -> void:
 ## The test setup for the function and their inputs.
 ## Most other parameters are set in the node iteself.
 func value_slicer_unit_test(
-	_slicer : ValueSlicer,
+	_slicer : StickySlices,
 	_current_value : float,
 	_previous_slice : int,
 	_expected_output : int,
