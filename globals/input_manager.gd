@@ -1,3 +1,6 @@
+## A global script responsible for listening to and processing inputs.
+## These are then accessible to any script in the game that needs them.
+## It keeps track of multiple input devices and can swap between them any time.
 extends Node
 
 enum input_devices {MOUSE, CONTROLLER}
@@ -22,7 +25,7 @@ var mouse_velocity 			:= Vector2.ZERO
 # Mouse input
 var mouse_left_state 		:= mouse_states.NONE
 var mouse_left_held_time 	:= 0.0
-var _mouse_left_pressed 	:= false
+var mouse_left_pressed 	:= false
 
 var bypass_controls := false
 
@@ -69,9 +72,9 @@ func _input(event: InputEvent) -> void:
 	# Mouse button
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-			_mouse_left_pressed = true
+			mouse_left_pressed = true
 		elif event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-			_mouse_left_pressed = false
+			mouse_left_pressed = false
 			
 	elif event is InputEventScreenTouch:
 		if event.is_pressed():
@@ -84,6 +87,9 @@ func _input(event: InputEvent) -> void:
 		mouse_position_change = event.screen_relative
 
 
+# TODO: All of this should probably move to the _input function.
+#		Add two sub-functions: One for listening to the input and the next one for processing it.
+#		This should happen during _input() to have all of this done before any other process starts.
 # Process inputs further
 func _process(_delta: float) -> void:
 	
@@ -102,21 +108,21 @@ func process_gameplay_input():
 	# Transition left mouse button state
 	match mouse_left_state:
 		mouse_states.NONE:
-			if _mouse_left_pressed:
+			if mouse_left_pressed:
 				mouse_left_state = mouse_states.PRESSED
 		mouse_states.PRESSED:
-			if _mouse_left_pressed:
+			if mouse_left_pressed:
 				mouse_left_state = mouse_states.HELD
 			else:
 				mouse_left_state = mouse_states.RELEASED
 		mouse_states.HELD:
-			if _mouse_left_pressed:
+			if mouse_left_pressed:
 				mouse_left_held_time += get_process_delta_time()
 			else:
 				mouse_left_held_time = 0.0
 				mouse_left_state = mouse_states.RELEASED
 		mouse_states.RELEASED:
-			if _mouse_left_pressed:
+			if mouse_left_pressed:
 				mouse_left_state = mouse_states.PRESSED
 			else:
 				mouse_left_state = mouse_states.NONE
