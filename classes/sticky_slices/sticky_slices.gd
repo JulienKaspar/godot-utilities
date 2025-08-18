@@ -15,17 +15,10 @@ class_name StickySlices
 @export var LOOPING_RANGE := false ## For example for rotations. In that case it's likely to use a range start and end of -PI to PI.
 
 # Values to pre-compute on ready
-var RANGE_SIZE : float
-var INVERTED_RANGE_SIZE : float
-var SLICE_SIZE : float
-var THRESHOLD_VALUE : float
-
-
-func _ready() -> void:
-	RANGE_SIZE = RANGE_END - RANGE_START
-	INVERTED_RANGE_SIZE = 1 / RANGE_SIZE
-	SLICE_SIZE = RANGE_SIZE / SLICE_COUNT
-	THRESHOLD_VALUE = SLICE_SIZE * THRESHOLD_FACTOR
+@onready var RANGE_SIZE := RANGE_END - RANGE_START
+@onready var INVERTED_RANGE_SIZE := 1 / RANGE_SIZE
+@onready var SLICE_SIZE := RANGE_SIZE / SLICE_COUNT
+@onready var THRESHOLD_VALUE := SLICE_SIZE * THRESHOLD_FACTOR
 
 
 # TODO: Make the previous_slice optional.
