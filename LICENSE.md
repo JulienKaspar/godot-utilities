@@ -10,6 +10,4 @@ Various other graphical assets are licensed as follows:
 
 * "abacus" by IconsHome from <a href="https://thenounproject.com/browse/icons/term/abacus/" target="_blank" title="Abacus Icons">Noun Project</a> (CC BY 3.0)
 
-* "music_box" by Yo! Baba from <a href="https://thenounproject.com/browse/icons/term/music-box/" target="_blank" title="music box Icons">Noun Project</a> (CC BY 3.0)
-
 * Pizza by Wahyu Adam from <a href="https://thenounproject.com/browse/icons/term/pizza/" target="_blank" title="Pizza Icons">Noun Project</a> (CC BY 3.0)
