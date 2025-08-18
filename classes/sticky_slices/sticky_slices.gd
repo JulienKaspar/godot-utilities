@@ -27,10 +27,6 @@ func _ready() -> void:
 	SLICE_SIZE = RANGE_SIZE / SLICE_COUNT
 	THRESHOLD_VALUE = SLICE_SIZE * THRESHOLD_FACTOR
 
-# TODO: Add an assert for when a linear value slicer is getting a value that is out of bounds.
-#		Or when it returns a slicer that is out of bounds.
-# 		Make the assert message obvious in what needs to change.
-
 
 # TODO: Make the previous_slice optional.
 #		If it's not passed in, then an internal 'previous_slice' variable should be used.
