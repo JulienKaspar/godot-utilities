@@ -22,12 +22,12 @@ func unit_tests_linear() -> void:
 	
 	var slicer = value_slicer_linear
 	
-	value_slicer_unit_test(slicer, 0, 0, 0) 	# First value in slice 0.
+	value_slicer_unit_test(slicer, 0, 0, 0) 		# First value in slice 0.
 	value_slicer_unit_test(slicer, 0.5, 0, 0) 	# Mid value in slice 0.
-	value_slicer_unit_test(slicer, 0.8, 1, 0) 	# Out of hyst range of slice 1.
-	value_slicer_unit_test(slicer, 0.95, 1, 1) 	# Within hyst range of slice 1.
-	value_slicer_unit_test(slicer, 0.95, 0, 0) 	# Within hyst range of slice 0.
-	value_slicer_unit_test(slicer, 1.05, 0, 0) 	# Within hyst range of slice 0.
+	value_slicer_unit_test(slicer, 0.8, 1, 0) 	# Out of threshold range of slice 1.
+	value_slicer_unit_test(slicer, 0.95, 1, 1) 	# Within threshold range of slice 1.
+	value_slicer_unit_test(slicer, 0.95, 0, 0) 	# Within threshold range of slice 0.
+	value_slicer_unit_test(slicer, 1.05, 0, 0) 	# Within threshold range of slice 0.
 	value_slicer_unit_test(slicer, 1.15, 0, 1) 	# Firmly in slice 1.
 	value_slicer_unit_test(slicer, 3.9999, 3, 3)
 	
@@ -43,10 +43,10 @@ func unit_tests_linear_less_trivial() -> void:
 	
 	value_slicer_unit_test(slicer, -3, 0, 0) 	# First value in slice 0.
 	value_slicer_unit_test(slicer, -2.75, 0, 0) # Mid value in slice 0.
-	value_slicer_unit_test(slicer, -2.61, 1, 0) # Out of hyst range of slice 1.
-	value_slicer_unit_test(slicer, -2.59, 1, 1) # Within hyst range of slice 1.
-	value_slicer_unit_test(slicer, -2.59, 0, 0) # Within hyst range of slice 0.
-	value_slicer_unit_test(slicer, -2.45, 0, 0) # Within hyst range of slice 0.
+	value_slicer_unit_test(slicer, -2.61, 1, 0) # Out of threshold range of slice 1.
+	value_slicer_unit_test(slicer, -2.59, 1, 1) # Within threshold range of slice 1.
+	value_slicer_unit_test(slicer, -2.59, 0, 0) # Within threshold range of slice 0.
+	value_slicer_unit_test(slicer, -2.45, 0, 0) # Within threshold range of slice 0.
 	value_slicer_unit_test(slicer, -2.30, 0, 1) # Firmly in slice 1.
 	value_slicer_unit_test(slicer, 0, 0, 6) 
 	value_slicer_unit_test(slicer, 2.9999, 0, 11) 

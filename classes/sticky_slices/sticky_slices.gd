@@ -8,55 +8,57 @@ class_name StickySlices
 ## An (optional) threshold and previous slice is used to determine when the slice can change to avoid flickering.
 
 @export_category("Slicer Parameters")
-@export var _range_minimum := 0.0 ## Inclusive value
-@export var _range_maximum := 1.0 ## Exclusive value
-@export var _slice_numbers := 6
-@export var _threshold_factor := 0.1 ## Fraction of a single slice
-@export var _use_looping_range := false
+@export var RANGE_START := 0.0 ## Inclusive value
+@export var RANGE_END := 1.0 ## Exclusive value
+@export var SLICE_COUNT := 6
+@export var THRESHOLD_FACTOR := 0.1 ## Fraction of a each individual slice
+@export var LOOPING_RANGE := false ## For example for rotations. In that case it's likely to use a range start and end of -PI to PI.
 
 # Values to pre-compute on ready
-var _range_size : float
-var _inverted_range_size : float
-var _slice_size : float
-var _threshold_value : float
+var RANGE_SIZE : float
+var INVERTED_RANGE_SIZE : float
+var SLICE_SIZE : float
+var THRESHOLD_VALUE : float
 
 
-# Pre-compute values and setup.
 func _ready() -> void:
-	
-	_range_size = _range_maximum - _range_minimum
-	_inverted_range_size = 1 / _range_size
-	_slice_size = _range_size / _slice_numbers
-	_threshold_value = _slice_size * _threshold_factor
+	RANGE_SIZE = RANGE_END - RANGE_START
+	INVERTED_RANGE_SIZE = 1 / RANGE_SIZE
+	SLICE_SIZE = RANGE_SIZE / SLICE_COUNT
+	THRESHOLD_VALUE = SLICE_SIZE * THRESHOLD_FACTOR
+
+# TODO: Add an assert for when a linear value slicer is getting a value that is out of bounds.
+#		Or when it returns a slicer that is out of bounds.
+# 		Make the assert message obvious in what needs to change.
+
 
 # TODO: Make the previous_slice optional.
 #		If it's not passed in, then an internal 'previous_slice' variable should be used.
 #		Add logic to update this internal 'previous_slice'.
 # 		If the threshold value is on 0, then the previous slice shouldn't even matter.
 #		Also if the node is called for the first time, the previous slice shouldn't matter.
-
 ## A function to cut a range into slices and return on which segment a current value is.
 func get_snapped_slice(
 		current_value: float,
 		previous_slice: int,
 ) -> int:
 	
-	if _use_looping_range:
+	if LOOPING_RANGE:
 		# Switch active slice based on the center of each slice.
 		# Wrap any values that go outside of the range.
 		
 		var slice_index = _snap_value_to_slice(
-			current_value + (_slice_size * 0.5),
+			current_value + (SLICE_SIZE * 0.5),
 			previous_slice
 		)
-		return slice_index % _slice_numbers
+		return slice_index % SLICE_COUNT
 	
 	else:
 		# Switch active slice on the outer edge of each slice.
 		# Error if value is outside of given range.
 		
 		assert(
-			current_value >= _range_minimum or current_value <= _range_maximum,
+			current_value >= RANGE_START or current_value <= RANGE_END,
 			"current_value is not within the given range!"
 		)
 		return _snap_value_to_slice(current_value, previous_slice)
@@ -70,14 +72,14 @@ func _snap_value_to_slice(
 	# TODO: Using the slice middle should be optional
 	#		When dynamically switching between values slicers with different slice counts,
 	#		it's better if the divisions are aligned!
-	var prev_slice_middle = (previous_slice + 0.5) * _slice_size + _range_minimum
+	var prev_slice_middle = (previous_slice + 0.5) * SLICE_SIZE + RANGE_START
 	
-	if _threshold_value > 0.0 and abs(prev_slice_middle - current_value) < _slice_size:
+	if THRESHOLD_VALUE > 0.0 and abs(prev_slice_middle - current_value) < SLICE_SIZE:
 		# Pull the current value towards the middle of the previous slice, but
 		# only if it's "closer by" than the middle of an adjacent slice.
-		current_value += _threshold_value * sign(prev_slice_middle - current_value)
+		current_value += THRESHOLD_VALUE * sign(prev_slice_middle - current_value)
 	
-	var current_normalized = (current_value - _range_minimum) * _inverted_range_size
-	var slice_index = _slice_numbers * current_normalized
+	var current_normalized = (current_value - RANGE_START) * INVERTED_RANGE_SIZE
+	var slice_index = SLICE_COUNT * current_normalized
 	
 	return floor(slice_index)
