@@ -68,13 +68,6 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_velocity = event.screen_velocity
 		mouse_position_change = event.screen_relative
-	
-	# Mouse button
-	elif event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-			mouse_left_pressed = true
-		elif event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-			mouse_left_pressed = false
 			
 	elif event is InputEventScreenTouch:
 		if event.is_pressed():
@@ -89,7 +82,7 @@ func _input(event: InputEvent) -> void:
 
 # TODO: All of this should probably move to the _input function.
 #		Add two sub-functions: One for listening to the input and the next one for processing it.
-#		This should happen during _input() to have all of this done before any other process starts.
+#		This should happen during _input() to have all of this done before any other process starts.	
 # Process inputs further
 func _process(_delta: float) -> void:
 	
@@ -104,6 +97,9 @@ func process_gameplay_input():
 	# Don't use debug shortcuts when running a release build (as oppsed to "debug" or "editor") 
 	if not OS.has_feature("release"):
 		pass
+	
+	# Mouse button
+	mouse_left_pressed = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	
 	# Transition left mouse button state
 	match mouse_left_state:
