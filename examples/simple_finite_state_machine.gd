@@ -16,10 +16,7 @@ enum states {
 	ACTING = 21
 }
 
-var current_state := states.IDLE:
-	set(new_state):
-		state_exiting(current_state)
-		current_state = new_state
+var current_state := states.IDLE
 var previous_state : states
 
 
@@ -31,8 +28,9 @@ func _physics_process(delta: float) -> void:
 func state_machine() -> void:
 
 	var current_state_name : StringName = str(states.find_key(current_state))
+	var previous_state_name : StringName = str(states.find_key(previous_state))
 
-	# Enter new state 
+	# State entering
 	# Call its entering function (if it has one)
 	if current_state != previous_state:
 		var entering_function : StringName = "state_" + current_state_name.to_lower() + "_enter"
@@ -40,11 +38,19 @@ func state_machine() -> void:
 			call(entering_function)
 		
 		# Do this at the end of this frame in case any process needs to know what state came before
+		var update_previous_state := func():
+			previous_state = current_state
 		update_previous_state.call_deferred()
 	
 	# State process
 	var process_function : StringName = "state_" + current_state_name.to_lower() + "_process"
 	call(process_function)
+
+	# State exiting
+	# Enter new state and call its entering function (if it has one)
+	var exiting_function : StringName = "state_" + previous_state_name.to_lower() + "_exit"
+	if has_method(exiting_function):
+		call(exiting_function)
 
 
 # --- NOTE: Finite State Machine here ---
@@ -64,19 +70,3 @@ func state_idle_process() -> void:
 func state_idle_exit() -> void:
 	
 	print("EXIT IDLING")
-
-
-# --- NOTE: Signaled and private methods here ---
-
-
-func update_previous_state() -> void:
-	previous_state = current_state
-
-
-func state_exiting(state : states):
-
-	var state_name := str(states.find_key(state))
-	# Enter new state and call its entering function (if it has one)
-	var exiting_function : StringName = "state_" + state_name.to_lower() + "_exit"
-	if has_method(exiting_function):
-		call(exiting_function)
