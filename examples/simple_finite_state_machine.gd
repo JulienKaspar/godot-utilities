@@ -20,7 +20,7 @@ var current_state := states.IDLE
 var previous_state : states
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 
 	state_machine()
 
