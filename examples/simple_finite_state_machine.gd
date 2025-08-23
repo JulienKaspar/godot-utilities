@@ -9,7 +9,7 @@
 extends CharacterBody2D
 
 # These are used to for some error prevention while the state machine is running
-enum statemachine_stages {NONE, ENTER, PROCESS, EXIT, DEFERRED}
+enum statemachine_stages {NONE, ENTER, PROCESS, EXIT}
 var locked_stages := [
 	statemachine_stages.NONE, 
 	statemachine_stages.ENTER, 
@@ -30,8 +30,7 @@ var current_state := states.IDLE:
 		current_state = value
 var previous_state : states:
 	set(value):
-		assert(current_statemachine_stage not in locked_stages, "To avoid bugs, only change the state while using statemachine 'process' functions!")
-		previous_state = value
+		assert(current_statemachine_stage == statemachine_stages.ENTER, "This variable is only changed by the state machine!")		previous_state = value
 
 
 func _physics_process(_delta: float) -> void:
@@ -52,12 +51,7 @@ func state_machine() -> void:
 		if has_method(entering_function):
 			call(entering_function)
 		
-		# Do this at the end of this frame in case any process needs to know what state came before
-		var update_previous_state := func():
-			current_statemachine_stage = statemachine_stages.DEFERRED
-			previous_state = current_state
-			current_statemachine_stage = statemachine_stages.NONE
-		update_previous_state.call_deferred()
+		previous_state = current_state
 	
 	# --- STATE PROCESS ---
 	current_statemachine_stage = statemachine_stages.PROCESS
