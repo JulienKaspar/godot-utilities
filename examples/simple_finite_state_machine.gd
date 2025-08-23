@@ -26,11 +26,11 @@ enum states {
 }
 var current_state := states.IDLE:
 	set(value):
-		assert(current_statemachine_stage in locked_stages, "To avoid bugs, only change the state while using statemachine 'process' functions!")
+		assert(current_statemachine_stage not in locked_stages, "To avoid bugs, only change the state while using statemachine 'process' functions!")
 		current_state = value
 var previous_state : states:
 	set(value):
-		assert(current_statemachine_stage in locked_stages, "To avoid bugs, only change the state while using statemachine 'process' functions!")
+		assert(current_statemachine_stage not in locked_stages, "To avoid bugs, only change the state while using statemachine 'process' functions!")
 		current_state = value
 
 
