@@ -1,4 +1,3 @@
-# @icon("res://classes/icons/pizza.svg")
 @icon("./pizza.svg")
 
 extends Node
