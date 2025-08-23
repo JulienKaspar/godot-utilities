@@ -31,7 +31,7 @@ var current_state := states.IDLE:
 var previous_state : states:
 	set(value):
 		assert(current_statemachine_stage not in locked_stages, "To avoid bugs, only change the state while using statemachine 'process' functions!")
-		current_state = value
+		previous_state = value
 
 
 func _physics_process(_delta: float) -> void:
