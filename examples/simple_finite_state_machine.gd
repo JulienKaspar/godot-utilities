@@ -13,7 +13,7 @@ enum statemachine_stages {NONE, ENTER, PROCESS, EXIT, DEFERRED}
 var locked_stages := [
 	statemachine_stages.NONE, 
 	statemachine_stages.ENTER, 
-	statemachine_stages.EXIT
+	statemachine_stages.EXIT,
 ]
 var current_statemachine_stage := statemachine_stages.NONE
 
@@ -22,7 +22,7 @@ enum states {
 	PREP_MOVE = 10, 
 	PREP_ACT = 20, 
 	MOVING = 11,
-	ACTING = 21
+	ACTING = 21,
 }
 var current_state := states.IDLE:
 	set(value):
