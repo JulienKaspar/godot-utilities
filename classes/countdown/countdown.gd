@@ -1,9 +1,9 @@
 @icon("./abacus.svg")
 
 extends Node
+class_name Countdown
 ## A custom type for manually ticking down of time or other units.
 ## An alternative to the Timer where there's no explicit stopped state and no pausing.
-class_name Countdown
 
 @export_range(0.0, 100.0) var MAXIMUM_VALUE : float = 1.0
 # TODO: Maybe also add a custom minimum value
